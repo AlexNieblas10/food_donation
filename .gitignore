@@ -43,7 +43,7 @@ ehthumbs.db
 Thumbs.db
 
 # Database credentials (security)
-src/main/java/resources/db.properties
+src/main/resources/db.properties
 
 # Build tools
 .gradle/
