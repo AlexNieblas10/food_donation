@@ -120,6 +120,11 @@ public class RegistroAlimento extends javax.swing.JFrame {
 
         btnGuardar.setText("Guardar");
         btnGuardar.setActionCommand("BtnGuardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Fruta", "Verdura", "Lacteo", "Carne", "Enlatado", "Grano", "Otro" }));
 
@@ -255,6 +260,10 @@ public class RegistroAlimento extends javax.swing.JFrame {
     private void jTextFieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldBuscarActionPerformed
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments

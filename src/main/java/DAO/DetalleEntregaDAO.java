@@ -98,4 +98,6 @@ public class DetalleEntregaDAO implements IDetalleEntrega {
         }
         return lista;
     }
+    
+    
 }

@@ -4,6 +4,17 @@
  */
 package Vistas;
 
+import DAO.AlimentoDAO;
+import DAO.EntregaDAO;
+import Entidades.Alimento;
+import Entidades.DetalleEntrega;
+import Entidades.Entrega;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Laptop
@@ -11,13 +22,97 @@ package Vistas;
 public class GestionarEntrega extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GestionarEntrega.class.getName());
+    
+    
+    
+      // 1. Instanciar los DAOs
+    private final AlimentoDAO alimentoDAO;
+    private final EntregaDAO entregaDAO;
+    private DefaultTableModel modeloAlimentosDisponibles;
+    private DefaultTableModel modeloListaEntregas;
 
-    /**
-     * Creates new form GestionarEntrega
-     */
     public GestionarEntrega() {
         initComponents();
+        this.alimentoDAO = new AlimentoDAO();
+        this.entregaDAO = new EntregaDAO();
+        
+        // 2. Configurar tablas y cargar datos iniciales
+        configurarTablas();
+        cargarTablaAlimentosDisponibles();
+        cargarTablaEntregas();
+        agregarListenersTablas();
     }
+    
+    private void configurarTablas(){
+        // Configuración para la tabla de alimentos en la pestaña "Nueva Entrega"
+        modeloAlimentosDisponibles = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que la tabla no sea editable
+            }
+        };
+        modeloAlimentosDisponibles.setColumnIdentifiers(new String[]{"ID", "Alimento", "Categoría", "Disponible", "Caducidad"});
+        jTableAlimentosDisponibles.setModel(modeloAlimentosDisponibles);
+        
+        // Configuración para la tabla de entregas en la pestaña "Entregas"
+        modeloListaEntregas = new DefaultTableModel(){
+             @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        modeloListaEntregas.setColumnIdentifiers(new String[]{"ID Entrega", "Organización", "Alimento", "Cantidad", "Fecha", "Estado", "ID Alimento"});
+        jTableListaDeEntregas.setModel(modeloListaEntregas);
+        
+        // Ocultar la columna de ID Alimento en la tabla de entregas, la usaremos internamente
+        jTableListaDeEntregas.removeColumn(jTableListaDeEntregas.getColumnModel().getColumn(6));
+    }
+
+    private void cargarTablaAlimentosDisponibles() {
+        modeloAlimentosDisponibles.setRowCount(0); // Limpiar tabla
+        List<Alimento> alimentos = alimentoDAO.obtenerAlimentosDisponibles();
+        for (Alimento alim : alimentos) {
+            modeloAlimentosDisponibles.addRow(new Object[]{
+                alim.getIdAlimento(),
+                alim.getNombreAlimento(),
+                alim.getCategoria(),
+                alim.getCantidadDisponible(),
+                alim.getFechaCaducidad()
+            });
+        }
+    }
+    
+    private void cargarTablaEntregas() {
+        modeloListaEntregas.setRowCount(0); // Limpiar tabla
+        List<Object[]> entregas = entregaDAO.obtenerEntregasParaTabla();
+        for (Object[] fila : entregas) {
+            modeloListaEntregas.addRow(fila);
+        }
+    }
+
+    private void agregarListenersTablas() {
+        // Listener para la tabla de Alimentos Disponibles
+        jTableAlimentosDisponibles.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting() && jTableAlimentosDisponibles.getSelectedRow() != -1) {
+                int filaSeleccionada = jTableAlimentosDisponibles.getSelectedRow();
+                String idAlimento = jTableAlimentosDisponibles.getValueAt(filaSeleccionada, 0).toString();
+                jTextFieldIDAlimento.setText(idAlimento);
+            }
+        });
+
+        // Listener para la tabla de Lista de Entregas
+        jTableListaDeEntregas.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            if (!e.getValueIsAdjusting() && jTableListaDeEntregas.getSelectedRow() != -1) {
+                int filaSeleccionada = jTableListaDeEntregas.getSelectedRow();
+                String idEntrega = jTableListaDeEntregas.getValueAt(filaSeleccionada, 0).toString();
+                String estado = jTableListaDeEntregas.getValueAt(filaSeleccionada, 5).toString();
+                
+                jTextFieldIDEntrega.setText(idEntrega);
+                jComboBoxEstadoEntrega.setSelectedItem(estado);
+            }
+        });
+    }
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,15 +123,15 @@ public class GestionarEntrega extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        jTabbedPaneNuevaEntrega = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextFieldIDOrg = new javax.swing.JTextField();
+        jTextFieldIdOrganizacion = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableAlimentosDisponibles = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jDateChooserFEntrega = new com.toedter.calendar.JDateChooser();
+        jDateChooserFechaEntrega = new com.toedter.calendar.JDateChooser();
         jLabel5 = new javax.swing.JLabel();
         jComboBoxEstado = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
@@ -46,11 +141,11 @@ public class GestionarEntrega extends javax.swing.JFrame {
         BtnGuardar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        jTableListaDeEntregas = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jTextFieldIDEntrega = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jComboBoxEstadoEnt = new javax.swing.JComboBox<>();
+        jComboBoxEstadoEntrega = new javax.swing.JComboBox<>();
         BtnActualizar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -65,13 +160,13 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
         jLabel2.setText("ID Organizacion");
 
-        jTextFieldIDOrg.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldIdOrganizacion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldIDOrgActionPerformed(evt);
+                jTextFieldIdOrganizacionActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableAlimentosDisponibles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -82,7 +177,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(jTableAlimentosDisponibles);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel3.setText("Alimentos Disponibles");
@@ -131,8 +226,8 @@ public class GestionarEntrega extends javax.swing.JFrame {
                                     .addComponent(jLabel2))
                                 .addGap(20, 20, 20)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextFieldIDOrg)
-                                    .addComponent(jDateChooserFEntrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                    .addComponent(jTextFieldIdOrganizacion)
+                                    .addComponent(jDateChooserFechaEntrega, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(18, 18, 18))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(92, 92, 92)
@@ -156,11 +251,11 @@ public class GestionarEntrega extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
-                            .addComponent(jTextFieldIDOrg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTextFieldIdOrganizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jDateChooserFEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jDateChooserFechaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jComboBoxEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -179,9 +274,9 @@ public class GestionarEntrega extends javax.swing.JFrame {
                 .addContainerGap(54, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab("Nueva Entrega", jPanel1);
+        jTabbedPaneNuevaEntrega.addTab("Nueva Entrega", jPanel1);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        jTableListaDeEntregas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -192,7 +287,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(jTableListaDeEntregas);
 
         jLabel1.setText("ID Entrega");
 
@@ -204,7 +299,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
         jLabel8.setText("Estado");
 
-        jComboBoxEstadoEnt.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En Transito", "Completado", "Cancelado" }));
+        jComboBoxEstadoEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En Transito", "Completado", "Cancelado" }));
 
         BtnActualizar.setText("Actualizar");
         BtnActualizar.setActionCommand("BtnActualizar");
@@ -216,6 +311,11 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
         BtnEliminar.setText("Eliminar");
         BtnEliminar.setActionCommand("BtnEliminar");
+        BtnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -234,7 +334,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBoxEstadoEnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jComboBoxEstadoEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(BtnActualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -251,13 +351,13 @@ public class GestionarEntrega extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jTextFieldIDEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
-                    .addComponent(jComboBoxEstadoEnt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxEstadoEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BtnActualizar)
                     .addComponent(BtnEliminar))
                 .addGap(20, 20, 20))
         );
 
-        jTabbedPane2.addTab("Entregas", jPanel2);
+        jTabbedPaneNuevaEntrega.addTab("Entregas", jPanel2);
 
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
@@ -281,11 +381,11 @@ public class GestionarEntrega extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(jTabbedPaneNuevaEntrega, javax.swing.GroupLayout.PREFERRED_SIZE, 655, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
+            .addComponent(jTabbedPaneNuevaEntrega, javax.swing.GroupLayout.DEFAULT_SIZE, 399, Short.MAX_VALUE)
         );
 
         pack();
@@ -293,19 +393,105 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
         // TODO add your handling code here:
+         // 1. Validar Entradas
+        if (jTextFieldIdOrganizacion.getText().trim().isEmpty() || 
+            jTextFieldIDAlimento.getText().trim().isEmpty() ||
+            jTextFieldCantidad.getText().trim().isEmpty() ||
+            jDateChooserFechaEntrega.getDate() == null) {
+            JOptionPane.showMessageDialog(this, "Todos los campos son obligatorios.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            int idOrg = Integer.parseInt(jTextFieldIdOrganizacion.getText().trim());
+            int idAlim = Integer.parseInt(jTextFieldIDAlimento.getText().trim());
+            double cantidad = Double.parseDouble(jTextFieldCantidad.getText().trim());
+            Date fecha = jDateChooserFechaEntrega.getDate();
+            String estado = jComboBoxEstado.getSelectedItem().toString();
+            
+            double cantidadDisponible = (double) jTableAlimentosDisponibles.getValueAt(jTableAlimentosDisponibles.getSelectedRow(), 3);
+            if (cantidad <= 0 || cantidad > cantidadDisponible) {
+                JOptionPane.showMessageDialog(this, "La cantidad no es válida.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // 2. Crear objetos
+            Entrega entrega = new Entrega();
+            entrega.setIdOrganizacion(idOrg);
+            entrega.setFechaEntrega((java.sql.Date) fecha);
+            entrega.setEstadoEntrega(estado.toLowerCase());
+
+            DetalleEntrega detalle = new DetalleEntrega();
+            detalle.setIdAlimento(idAlim);
+            detalle.setCantidadEntregada(cantidad);
+
+            // 3. Llamar al DAO
+            if (entregaDAO.registrarEntregaCompleta(entrega, detalle)) {
+                JOptionPane.showMessageDialog(this, "Entrega registrada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                // 4. Actualizar GUI
+                cargarTablaAlimentosDisponibles();
+                cargarTablaEntregas();
+                jTextFieldIDAlimento.setText("");
+                jTextFieldCantidad.setText("");
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Los IDs y la cantidad deben ser números válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnActualizarActionPerformed
         // TODO add your handling code here:
+         if (jTextFieldIDEntrega.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Seleccione una entrega de la tabla para actualizar.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        int idEntrega = Integer.parseInt(jTextFieldIDEntrega.getText());
+        String nuevoEstado = jComboBoxEstadoEntrega.getSelectedItem().toString().toLowerCase();
+
+        if (entregaDAO.actualizarEstado(idEntrega, nuevoEstado)) {
+            JOptionPane.showMessageDialog(this, "Estado actualizado.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            cargarTablaEntregas(); // Recargar para ver el cambio
+        } else {
+             JOptionPane.showMessageDialog(this, "No se pudo actualizar el estado.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_BtnActualizarActionPerformed
 
     private void jTextFieldIDEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDEntregaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIDEntregaActionPerformed
 
-    private void jTextFieldIDOrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDOrgActionPerformed
+    private void jTextFieldIdOrganizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIdOrganizacionActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldIDOrgActionPerformed
+    }//GEN-LAST:event_jTextFieldIdOrganizacionActionPerformed
+
+    private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
+        // TODO add your handling code here:
+        int filaSeleccionada = jTableListaDeEntregas.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una entrega de la tabla para cancelar.", "Error", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Preguntar al usuario si está seguro
+        int confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea cancelar esta entrega? La cantidad será devuelta al inventario.", "Confirmar Cancelación", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            int idEntrega = (int) modeloListaEntregas.getValueAt(filaSeleccionada, 0);
+            double cantidad = (double) modeloListaEntregas.getValueAt(filaSeleccionada, 3);
+            // El ID del alimento está en la columna 6 (que está oculta pero accesible desde el modelo)
+            int idAlimento = (int) modeloListaEntregas.getValueAt(filaSeleccionada, 6);
+
+            if (entregaDAO.cancelarEntrega(idEntrega, idAlimento, cantidad)) {
+                JOptionPane.showMessageDialog(this, "Entrega cancelada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarTablaEntregas();
+                cargarTablaAlimentosDisponibles(); // El stock cambió
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo cancelar la entrega.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_BtnEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -337,8 +523,8 @@ public class GestionarEntrega extends javax.swing.JFrame {
     private javax.swing.JButton BtnEliminar;
     private javax.swing.JButton BtnGuardar;
     private javax.swing.JComboBox<String> jComboBoxEstado;
-    private javax.swing.JComboBox<String> jComboBoxEstadoEnt;
-    private com.toedter.calendar.JDateChooser jDateChooserFEntrega;
+    private javax.swing.JComboBox<String> jComboBoxEstadoEntrega;
+    private com.toedter.calendar.JDateChooser jDateChooserFechaEntrega;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -356,12 +542,12 @@ public class GestionarEntrega extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTabbedPane jTabbedPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTabbedPane jTabbedPaneNuevaEntrega;
+    private javax.swing.JTable jTableAlimentosDisponibles;
+    private javax.swing.JTable jTableListaDeEntregas;
     private javax.swing.JTextField jTextFieldCantidad;
     private javax.swing.JTextField jTextFieldIDAlimento;
     private javax.swing.JTextField jTextFieldIDEntrega;
-    private javax.swing.JTextField jTextFieldIDOrg;
+    private javax.swing.JTextField jTextFieldIdOrganizacion;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -109,5 +110,63 @@ public class AlimentoDAO implements IAlimento {
             System.err.println("Error al obtener alimentos: " + e.getMessage());
         }
         return lista;
+    }
+    
+      /**
+     * Obtiene una lista de todos los alimentos con cantidad disponible > 0.
+     * @return Lista de alimentos.
+     */
+    public List<Alimento> obtenerAlimentosDisponibles() {
+        List<Alimento> alimentos = new ArrayList<>();
+        // Solo trae alimentos con existencias y que no hayan caducado
+        String sql = "SELECT * FROM Alimento WHERE cantidad_disponible > 0 AND fecha_caducidad >= CURDATE()";
+
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Alimento alimento = new Alimento();
+                alimento.setIdAlimento(rs.getInt("id_alimento"));
+                alimento.setNombreAlimento(rs.getString("nombre_alimento"));
+                alimento.setCategoria(rs.getString("categoria"));
+                alimento.setCantidadDisponible(rs.getDouble("cantidad_disponible"));
+                alimento.setFechaCaducidad(rs.getDate("fecha_caducidad"));
+                alimento.setIdDonador(rs.getInt("id_donador"));
+                alimentos.add(alimento);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al consultar alimentos: " + e.getMessage());
+        }
+        return alimentos;
+    }
+    
+     /**
+     * Actualiza la cantidad disponible de un alimento.
+     * @param idAlimento ID del alimento a actualizar.
+     * @param cantidadARestar Cantidad que se va a restar del inventario.
+     * @param conn Conexión a la BD (para transacciones).
+     * @return true si la actualización fue exitosa.
+     * @throws SQLException Si ocurre un error.
+     */
+    public boolean actualizarCantidad(int idAlimento, double cantidadARestar, Connection conn) throws SQLException {
+        String sql = "UPDATE Alimento SET cantidad_disponible = cantidad_disponible - ? WHERE id_alimento = ?";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, cantidadARestar);
+            pstmt.setInt(2, idAlimento);
+            return pstmt.executeUpdate() > 0;
+        }
+    }
+    
+     
+    public boolean devolverCantidad(int idAlimento, double cantidadADevolver, Connection conn) throws SQLException {
+        String sql = "UPDATE Alimento SET cantidad_disponible = cantidad_disponible + ? WHERE id_alimento = ?";
+        
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setDouble(1, cantidadADevolver);
+            pstmt.setInt(2, idAlimento);
+            return pstmt.executeUpdate() > 0;
+        }
     }
 }

@@ -54,17 +54,17 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane2" min="-2" pref="655" max="-2" attributes="0"/>
+          <Component id="jTabbedPaneNuevaEntrega" min="-2" pref="655" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jTabbedPane2" alignment="0" pref="399" max="32767" attributes="0"/>
+          <Component id="jTabbedPaneNuevaEntrega" alignment="0" pref="399" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JTabbedPane" name="jTabbedPane2">
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPaneNuevaEntrega">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -111,8 +111,8 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jTextFieldIDOrg" max="32767" attributes="0"/>
-                                          <Component id="jDateChooserFEntrega" max="32767" attributes="0"/>
+                                          <Component id="jTextFieldIdOrganizacion" max="32767" attributes="0"/>
+                                          <Component id="jDateChooserFechaEntrega" max="32767" attributes="0"/>
                                       </Group>
                                   </Group>
                               </Group>
@@ -147,12 +147,12 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextFieldIDOrg" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jTextFieldIdOrganizacion" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jDateChooserFEntrega" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jDateChooserFechaEntrega" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
@@ -185,9 +185,9 @@
                 <Property name="text" type="java.lang.String" value="ID Organizacion"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextFieldIDOrg">
+            <Component class="javax.swing.JTextField" name="jTextFieldIdOrganizacion">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldIDOrgActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldIdOrganizacionActionPerformed"/>
               </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -197,7 +197,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable1">
+                <Component class="javax.swing.JTable" name="jTableAlimentosDisponibles">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
@@ -224,7 +224,7 @@
                 <Property name="text" type="java.lang.String" value="Fecha de Entrega"/>
               </Properties>
             </Component>
-            <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserFEntrega">
+            <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserFechaEntrega">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
@@ -297,7 +297,7 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jComboBoxEstadoEnt" min="-2" max="-2" attributes="0"/>
+                              <Component id="jComboBoxEstadoEntrega" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="BtnActualizar" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -318,7 +318,7 @@
                           <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextFieldIDEntrega" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jComboBoxEstadoEnt" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jComboBoxEstadoEntrega" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="BtnActualizar" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="BtnEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -335,7 +335,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="jTable2">
+                <Component class="javax.swing.JTable" name="jTableListaDeEntregas">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                       <Table columnCount="4" rowCount="4">
@@ -364,7 +364,7 @@
                 <Property name="text" type="java.lang.String" value="Estado"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBoxEstadoEnt">
+            <Component class="javax.swing.JComboBox" name="jComboBoxEstadoEntrega">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
@@ -393,6 +393,9 @@
                 <Property name="text" type="java.lang.String" value="Eliminar"/>
                 <Property name="actionCommand" type="java.lang.String" value="BtnEliminar"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnEliminarActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
