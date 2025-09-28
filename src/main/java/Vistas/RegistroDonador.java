@@ -11,7 +11,9 @@ import Entidades.Donador;
 import Excepciones.DonadorException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RegistroDonador extends javax.swing.JFrame {
 
+    private TableRowSorter<DefaultTableModel> sorter; 
     private DonadorController donadorController;
     private DireccionController direccionController;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroDonador.class.getName());
@@ -32,6 +35,16 @@ public class RegistroDonador extends javax.swing.JFrame {
         this.direccionController = new DireccionController();
 
         cargarDonadores();
+        
+          // Obtiene el modelo de la tabla que ya tiene los datos y las columnas
+        DefaultTableModel modelo = (DefaultTableModel) jTableBuscar.getModel();
+
+        // Crea el sorter basandose en ese modelo
+        sorter = new TableRowSorter<>(modelo);
+
+        //  Aplica el sorter a tabla
+        jTableBuscar.setRowSorter(sorter);
+        
     }
 
     /**
@@ -536,8 +549,46 @@ public class RegistroDonador extends javax.swing.JFrame {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         // TODO add your handling code here:
-        
-        
+        // 1. Obtener la fila seleccionada por el usuario
+        int filaSeleccionada = jTableBuscar.getSelectedRow();
+
+        // 2. Validar que se haya seleccionado una fila
+        if (filaSeleccionada == -1) { // -1 significa que no hay ninguna fila seleccionada
+            JOptionPane.showMessageDialog(this, "Por favor, seleccione un donador de la tabla para eliminar.", "Ningun donador seleccionado", JOptionPane.WARNING_MESSAGE);
+            return; // Detiene la ejecucion si no hay nada seleccionado
+        }
+
+        try {
+            // 3. Obtener el ID del donador de la columna 0 de la fila seleccionada
+            // El valor se obtiene como Object, asi que hay que convertirlo a Integer.
+            int idDonadorEliminar = (int) jTableBuscar.getValueAt(filaSeleccionada, 0);
+
+            // 4. Pedir confirmacion al usuario (¡Paso de seguridad crucial!)
+            int confirmacion = JOptionPane.showConfirmDialog(
+                    this,
+                    "¿Esta seguro de que desea eliminar al donador con ID " + idDonadorEliminar + "?",
+                    "Confirmar Eliminacion",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+
+            // 5. Si el usuario hace clic en "Sí" (YES_OPTION es 0)
+            if (confirmacion == JOptionPane.YES_OPTION) {
+                // Se llama al controlador para eliminar el donador
+                donadorController.eliminarDonador(idDonadorEliminar);
+
+                // Se informa al usuario del exito
+                JOptionPane.showMessageDialog(this, "Donador eliminado exitosamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+
+                // 6. Se actualiza la tabla para que ya no se vea el registro eliminado
+                cargarDonadores();
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al eliminar el donador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error en btnEliminarActionPerformed: " + e.getMessage());
+        }
+
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void jTextFieldBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldBuscarActionPerformed
@@ -546,6 +597,17 @@ public class RegistroDonador extends javax.swing.JFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
+
+        String textoBusqueda = jTextFieldBuscar.getText();
+
+        if (textoBusqueda.trim().length() == 0) {
+            // Si el campo de busqueda esta vacio, elimina cualquier filtro anterior
+            sorter.setRowFilter(null);
+        } else {
+            // Aplica un filtro que no distingue mayusculas/minus
+            // Buscara el texto en cualquierr columna de la tabla
+            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + textoBusqueda));
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
