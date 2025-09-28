@@ -4,12 +4,23 @@
  */
 package Vistas;
 
+import Control.DireccionController;
+import Control.DonadorController;
+import Entidades.Direccion;
+import Entidades.Donador;
+import Excepciones.DonadorException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Laptop
  */
 public class RegistroDonador extends javax.swing.JFrame {
-    
+
+    private DonadorController donadorController;
+    private DireccionController direccionController;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroDonador.class.getName());
 
     /**
@@ -17,6 +28,55 @@ public class RegistroDonador extends javax.swing.JFrame {
      */
     public RegistroDonador() {
         initComponents();
+        this.donadorController = new DonadorController();
+        this.direccionController = new DireccionController();
+
+        cargarDonadores();
+    }
+
+    /**
+     * Metodo para poblar la tabla con los donadores de la base de datos.
+     */
+    private void cargarDonadores() {
+        try {
+            List<Donador> donadores = donadorController.obtenerTodosDonadores();
+            DefaultTableModel model = (DefaultTableModel) jTableBuscar.getModel();
+            model.setRowCount(0); // limpia la tabla antes de llenarla
+
+            // sefine las columnas de tu tabla
+            model.setColumnIdentifiers(new Object[]{"ID", "Nombre", "Ap. Paterno", "Tipo", "Telefono"});
+
+            for (Donador donador : donadores) {
+                model.addRow(new Object[]{
+                    donador.getIdDonador(),
+                    donador.getNombre(),
+                    donador.getApellidoPaterno(),
+                    donador.getTipoDonador(),
+                    donador.getTelefono()
+                });
+            }
+        } catch (DonadorException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar los donadores: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error en cargarDonadores: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Metodo para limpiar todos los campos del formulario.
+     */
+    private void limpiarFormulario() {
+        jTextFieldNombre.setText("");
+        jTextFieldAppaterno.setText("");
+        jTextFieldApMaterno.setText("");
+        jComboBoxTipoDonador.setSelectedIndex(0);
+        jTextFieldCorreo.setText("");
+        jTextFieldTelefono.setText("");
+        jTextFieldCalle.setText("");
+        jTextFieldNumero.setText("");
+        jTextFieldColonia.setText("");
+        jTextFieldCiudad.setText("");
+        jTextFieldEstado.setText("");
+        JTextFieldCodigoPos.setText("");
     }
 
     /**
@@ -359,7 +419,7 @@ public class RegistroDonador extends javax.swing.JFrame {
                             .addComponent(JTextFieldCodigoPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnGuardar)
                     .addComponent(btnEliminar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -378,6 +438,76 @@ public class RegistroDonador extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
+        // TODO add your handling code here:
+        try {
+            // --- 1. Recolectar y Validar Datos de la Direccion ---
+            String calle = jTextFieldCalle.getText();
+            String numero = jTextFieldNumero.getText();
+            String colonia = jTextFieldColonia.getText();
+            String ciudad = jTextFieldCiudad.getText();
+            String estado = jTextFieldEstado.getText();
+            String codigoPostal = JTextFieldCodigoPos.getText();
+
+            if (calle.trim().isEmpty() || ciudad.trim().isEmpty() || estado.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "La calle, ciudad y estado son obligatorios.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // --- 2. Crear el objeto Direccion ---
+            Direccion nuevaDireccion = new Direccion();
+            nuevaDireccion.setCalle(calle);
+            nuevaDireccion.setNumero(numero);
+            nuevaDireccion.setColonia(colonia);
+            nuevaDireccion.setCiudad(ciudad);
+            nuevaDireccion.setEstado(estado);
+            nuevaDireccion.setCodigoPostal(codigoPostal);
+
+            // --- 3. Guardar la Direccion y Capturar su ID ---
+            int idDireccionGuardada = direccionController.crearDireccion(nuevaDireccion);
+
+            // valida que la direccion se haya creado correctamente
+            if (idDireccionGuardada == 0) {
+                JOptionPane.showMessageDialog(this, "Ocurrió un error critico al guardar la direccion.", "Error en Base de Datos", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // --- 4. Recolectar y Validar Datos del Donador ---
+            String nombre = jTextFieldNombre.getText();
+            String apPaterno = jTextFieldAppaterno.getText();
+            String apMaterno = jTextFieldApMaterno.getText();
+            String tipoDonador = (String) jComboBoxTipoDonador.getSelectedItem();
+            String correo = jTextFieldCorreo.getText();
+            String telefono = jTextFieldTelefono.getText();
+
+            if (nombre.trim().isEmpty() || apPaterno.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El nombre y apellido paterno son obligatorios.", "Error de Validacion", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // --- 5. Crear y Guardar el Donador ---
+            Donador nuevoDonador = new Donador();
+            nuevoDonador.setNombre(nombre);
+            nuevoDonador.setApellidoPaterno(apPaterno);
+            nuevoDonador.setApellidoMaterno(apMaterno);
+            nuevoDonador.setTipoDonador(tipoDonador);
+            nuevoDonador.setCorreo(correo);
+            nuevoDonador.setTelefono(telefono);
+
+            //se asigna el ID de la direccion que acabamos de crear
+            nuevoDonador.setIdDireccion(idDireccionGuardada);
+
+            donadorController.crearDonador(nuevoDonador);
+
+            // --- 6. Feedback final y Limpieza ---
+            JOptionPane.showMessageDialog(this, "Donador guardado exitosamente. ", "Exito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormulario();
+            cargarDonadores(); //actualiza la tabla para que se vea el nuevo registro
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this, "Error al guardar el donador: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error en btnGuardarActionPerformed: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void jTextFieldTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTelefonoActionPerformed

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IDireccion {
     
-     void create(Direccion direccion);
+     int create(Direccion direccion);
     Direccion read(int id);
     void update(Direccion direccion);
     void delete(int id);

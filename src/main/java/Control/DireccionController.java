@@ -13,11 +13,11 @@ public class DireccionController {
         this.direccionDAO = new DireccionDAO();
     }
 
-    public void crearDireccion(Direccion direccion) throws DireccionException {
+    public int crearDireccion(Direccion direccion) throws DireccionException {
         try {
-            direccionDAO.create(direccion);
+            return direccionDAO.create(direccion);
         } catch (Exception e) {
-            throw new DireccionException("Error al crear dirección", e);
+            throw new DireccionException("Error al crear direccion", e);
         }
     }
 

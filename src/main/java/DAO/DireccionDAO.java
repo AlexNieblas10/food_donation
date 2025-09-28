@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,22 +19,41 @@ import java.util.List;
  *
  * @author Laptop
  */
-public class DireccionDAO implements IDireccion{
+public class DireccionDAO implements IDireccion {
 
-     @Override
-    public void create(Direccion direccion) {
+    @Override
+    public int create(Direccion direccion) {
         String sql = "INSERT INTO Direccion (calle, numero, colonia, ciudad, estado, codigo_postal) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        int generatedId = 0; // prepara una variable para guardar el ID
+
+        // 2. Añade ", Statement.RETURN_GENERATED_KEYS" para pedirle el ID a la base de datos
+        try (Connection conn = ConexionDB.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
             ps.setString(1, direccion.getCalle());
             ps.setString(2, direccion.getNumero());
             ps.setString(3, direccion.getColonia());
             ps.setString(4, direccion.getCiudad());
             ps.setString(5, direccion.getEstado());
             ps.setString(6, direccion.getCodigoPostal());
-            ps.executeUpdate();
+
+            int affectedRows = ps.executeUpdate();
+
+            if (affectedRows > 0) {
+                // 3. Si la insercion funciono, obten las llaves generadas
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) {
+                        // guarda el primer ID que encuentres en tu variable
+                        generatedId = rs.getInt(1);
+                    }
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Error al insertar dirección: " + e.getMessage());
+            //si hay un error, el metodo devolverá 0, como se inicializo la variable
         }
+
+        
+        return generatedId;
     }
 
     @Override
@@ -110,5 +130,5 @@ public class DireccionDAO implements IDireccion{
         }
         return lista;
     }
-    
+
 }
