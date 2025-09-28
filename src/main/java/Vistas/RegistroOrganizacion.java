@@ -4,19 +4,186 @@
  */
 package Vistas;
 
+import Control.OrganizacionController;
+import Control.DireccionController;
+import Entidades.Organizacion;
+import Entidades.Direccion;
+import Excepciones.OrganizacionException;
+import Excepciones.DireccionException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.List;
+
 /**
  *
  * @author Laptop
  */
 public class RegistroOrganizacion extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroOrganizacion.class.getName());
+    private OrganizacionController organizacionController;
+    private DireccionController direccionController;
+    private DefaultTableModel modeloTabla;
+    private int organizacionSeleccionadaId = -1;
 
     /**
      * Creates new form RegistroOrganizacion
      */
     public RegistroOrganizacion() {
         initComponents();
+        inicializarControladores();
+        configurarTabla();
+        cargarDatosTabla();
+        configurarEventosTabla();
+    }
+
+    private void inicializarControladores() {
+        this.organizacionController = new OrganizacionController();
+        this.direccionController = new DireccionController();
+    }
+
+    private void configurarTabla() {
+        String[] columnas = {"ID", "Organización", "Responsable", "Correo", "Teléfono"};
+        modeloTabla = new DefaultTableModel(columnas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        jTable1.setModel(modeloTabla);
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    private void cargarDatosTabla() {
+        try {
+            modeloTabla.setRowCount(0);
+            List<Organizacion> organizaciones = organizacionController.obtenerTodasOrganizaciones();
+            for (Organizacion org : organizaciones) {
+                Object[] fila = {
+                    org.getIdOrganizacion(),
+                    org.getNombreOrganizacion(),
+                    org.getNombreResponsable(),
+                    org.getCorreo(),
+                    org.getTelefono()
+                };
+                modeloTabla.addRow(fila);
+            }
+        } catch (OrganizacionException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar organizaciones: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al cargar organizaciones: " + e.getMessage());
+        }
+    }
+
+    private void configurarEventosTabla() {
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int filaSeleccionada = jTable1.getSelectedRow();
+                if (filaSeleccionada >= 0) {
+                    cargarDatosOrganizacion(filaSeleccionada);
+                }
+            }
+        });
+    }
+
+    private void cargarDatosOrganizacion(int fila) {
+        try {
+            organizacionSeleccionadaId = (Integer) modeloTabla.getValueAt(fila, 0);
+            Organizacion org = organizacionController.obtenerOrganizacion(organizacionSeleccionadaId);
+
+            if (org != null) {
+                jTextFieldOrganizacion.setText(org.getNombreOrganizacion());
+                jTextFieldResponsable.setText(org.getNombreResponsable());
+                jTextField3Correo.setText(org.getCorreo());
+                jTextField4Telefono.setText(org.getTelefono());
+
+                if (org.getIdDireccion() > 0) {
+                    Direccion direccion = direccionController.obtenerDireccion(org.getIdDireccion());
+                    if (direccion != null) {
+                        jTextFieldCalle.setText(direccion.getCalle());
+                        jTextFieldNumero.setText(direccion.getNumero());
+                        jTextFieldColonia.setText(direccion.getColonia());
+                        jTextFieldCiudad.setText(direccion.getCiudad());
+                        jTextFieldEstado.setText(direccion.getEstado());
+                        jTextFieldCodigoPos.setText(direccion.getCodigoPostal());
+                    }
+                }
+            }
+        } catch (OrganizacionException | DireccionException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al cargar datos de organización: " + e.getMessage());
+        }
+    }
+
+    private void limpiarCampos() {
+        jTextFieldOrganizacion.setText("");
+        jTextFieldResponsable.setText("");
+        jTextField3Correo.setText("");
+        jTextField4Telefono.setText("");
+        jTextFieldCalle.setText("");
+        jTextFieldNumero.setText("");
+        jTextFieldColonia.setText("");
+        jTextFieldCiudad.setText("");
+        jTextFieldEstado.setText("");
+        jTextFieldCodigoPos.setText("");
+        jTextFieldBuscar.setText("");
+        organizacionSeleccionadaId = -1;
+        jTable1.clearSelection();
+    }
+
+    private boolean validarCampos() {
+        if (jTextFieldOrganizacion.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre de la organización es obligatorio",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            jTextFieldOrganizacion.requestFocus();
+            return false;
+        }
+        if (jTextFieldResponsable.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del responsable es obligatorio",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            jTextFieldResponsable.requestFocus();
+            return false;
+        }
+        if (jTextField3Correo.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El correo electrónico es obligatorio",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            jTextField3Correo.requestFocus();
+            return false;
+        }
+        if (!jTextField3Correo.getText().contains("@")) {
+            JOptionPane.showMessageDialog(this, "Ingrese un correo electrónico válido",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            jTextField3Correo.requestFocus();
+            return false;
+        }
+        if (jTextField4Telefono.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El teléfono es obligatorio",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            jTextField4Telefono.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
+    public void btnNuevoActionPerformed() {
+        limpiarCampos();
+    }
+
+    public void actualizarVista() {
+        cargarDatosTabla();
+    }
+
+    private void jMenu1MenuSelected(javax.swing.event.MenuEvent evt) {
+        try {
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al regresar al menú: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al regresar al menú: " + e.getMessage());
+        }
     }
 
     /**
@@ -160,6 +327,15 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
 
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
+        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu1MenuSelected(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Donadores");
@@ -310,7 +486,59 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldOrganizacionActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        if (!validarCampos()) {
+            return;
+        }
+
+        try {
+            Direccion direccion = new Direccion();
+            direccion.setCalle(jTextFieldCalle.getText().trim());
+            direccion.setNumero(jTextFieldNumero.getText().trim());
+            direccion.setColonia(jTextFieldColonia.getText().trim());
+            direccion.setCiudad(jTextFieldCiudad.getText().trim());
+            direccion.setEstado(jTextFieldEstado.getText().trim());
+            direccion.setCodigoPostal(jTextFieldCodigoPos.getText().trim());
+
+            int idDireccion;
+            if (organizacionSeleccionadaId > 0) {
+                Organizacion orgExistente = organizacionController.obtenerOrganizacion(organizacionSeleccionadaId);
+                if (orgExistente != null && orgExistente.getIdDireccion() > 0) {
+                    direccion.setIdDireccion(orgExistente.getIdDireccion());
+                    direccionController.actualizarDireccion(direccion);
+                    idDireccion = orgExistente.getIdDireccion();
+                } else {
+                    idDireccion = direccionController.crearDireccion(direccion);
+                }
+            } else {
+                idDireccion = direccionController.crearDireccion(direccion);
+            }
+
+            Organizacion organizacion = new Organizacion();
+            organizacion.setNombreOrganizacion(jTextFieldOrganizacion.getText().trim());
+            organizacion.setNombreResponsable(jTextFieldResponsable.getText().trim());
+            organizacion.setCorreo(jTextField3Correo.getText().trim());
+            organizacion.setTelefono(jTextField4Telefono.getText().trim());
+            organizacion.setIdDireccion(idDireccion);
+
+            if (organizacionSeleccionadaId > 0) {
+                organizacion.setIdOrganizacion(organizacionSeleccionadaId);
+                organizacionController.actualizarOrganizacion(organizacion);
+                JOptionPane.showMessageDialog(this, "Organización actualizada exitosamente",
+                                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                organizacionController.crearOrganizacion(organizacion);
+                JOptionPane.showMessageDialog(this, "Organización registrada exitosamente",
+                                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            limpiarCampos();
+            cargarDatosTabla();
+
+        } catch (OrganizacionException | DireccionException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar organización: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al guardar organización: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void jTextFieldCodigoPosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCodigoPosActionPerformed
@@ -318,11 +546,89 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldCodigoPosActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
+        String textoBusqueda = jTextFieldBuscar.getText().trim();
+        if (textoBusqueda.isEmpty()) {
+            cargarDatosTabla();
+            return;
+        }
+
+        try {
+            modeloTabla.setRowCount(0);
+            List<Organizacion> organizaciones = organizacionController.obtenerTodasOrganizaciones();
+
+            for (Organizacion org : organizaciones) {
+                boolean coincide = false;
+
+                if (org.getNombreOrganizacion().toLowerCase().contains(textoBusqueda.toLowerCase()) ||
+                    org.getNombreResponsable().toLowerCase().contains(textoBusqueda.toLowerCase()) ||
+                    org.getCorreo().toLowerCase().contains(textoBusqueda.toLowerCase()) ||
+                    org.getTelefono().contains(textoBusqueda)) {
+                    coincide = true;
+                }
+
+                if (coincide) {
+                    Object[] fila = {
+                        org.getIdOrganizacion(),
+                        org.getNombreOrganizacion(),
+                        org.getNombreResponsable(),
+                        org.getCorreo(),
+                        org.getTelefono()
+                    };
+                    modeloTabla.addRow(fila);
+                }
+            }
+
+            if (modeloTabla.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "No se encontraron organizaciones que coincidan con la búsqueda",
+                                            "Búsqueda", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (OrganizacionException e) {
+            JOptionPane.showMessageDialog(this, "Error al buscar organizaciones: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al buscar organizaciones: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // TODO add your handling code here:
+        if (organizacionSeleccionadaId <= 0) {
+            JOptionPane.showMessageDialog(this, "Seleccione una organización de la tabla para eliminar",
+                                        "Validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro de que desea eliminar esta organización?\nEsta acción no se puede deshacer.",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            try {
+                Organizacion orgAEliminar = organizacionController.obtenerOrganizacion(organizacionSeleccionadaId);
+
+                organizacionController.eliminarOrganizacion(organizacionSeleccionadaId);
+
+                if (orgAEliminar != null && orgAEliminar.getIdDireccion() > 0) {
+                    try {
+                        direccionController.eliminarDireccion(orgAEliminar.getIdDireccion());
+                    } catch (DireccionException e) {
+                        logger.warning("No se pudo eliminar la dirección asociada: " + e.getMessage());
+                    }
+                }
+
+                JOptionPane.showMessageDialog(this, "Organización eliminada exitosamente",
+                                            "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+                limpiarCampos();
+                cargarDatosTabla();
+
+            } catch (OrganizacionException e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar organización: " + e.getMessage(),
+                                            "Error", JOptionPane.ERROR_MESSAGE);
+                logger.severe("Error al eliminar organización: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     /**
