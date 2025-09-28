@@ -4,12 +4,14 @@
  */
 package Vistas;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Laptop
  */
 public class Menu extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Menu.class.getName());
 
     /**
@@ -17,6 +19,13 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        configurarVentana();
+    }
+
+    private void configurarVentana() {
+        this.setLocationRelativeTo(null);
+        this.setTitle("Sistema de Donación de Alimentos - Menú Principal");
+        this.setResizable(false);
     }
 
     /**
@@ -55,6 +64,11 @@ public class Menu extends javax.swing.JFrame {
         btnOrganizacion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnOrganizacion.setText("Registrar organizacion");
         btnOrganizacion.setActionCommand("btnRegOrg");
+        btnOrganizacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrganizacionActionPerformed(evt);
+            }
+        });
 
         btnAlimento.setBackground(new java.awt.Color(204, 255, 204));
         btnAlimento.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -138,20 +152,64 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDonadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDonadorActionPerformed
-        // TODO add your handling code here:
+        try {
+            RegistroDonador registroDonador = new RegistroDonador();
+            registroDonador.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el registro de donadores: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir RegistroDonador: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnDonadorActionPerformed
 
+    private void btnOrganizacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrganizacionActionPerformed
+        try {
+            RegistroOrganizacion registroOrganizacion = new RegistroOrganizacion();
+            registroOrganizacion.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el registro de organizaciones: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir RegistroOrganizacion: " + e.getMessage());
+        }
+    }//GEN-LAST:event_btnOrganizacionActionPerformed
+
     private void btnAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlimentoActionPerformed
-        // TODO add your handling code here:
+        try {
+            RegistroAlimento registroAlimento = new RegistroAlimento();
+            registroAlimento.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el registro de alimentos: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir RegistroAlimento: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnAlimentoActionPerformed
 
-    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnSalirActionPerformed
-
     private void btnEntregaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntregaActionPerformed
-        // TODO add your handling code here:
+        try {
+            GestionarEntrega gestionarEntrega = new GestionarEntrega();
+            gestionarEntrega.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir la gestión de entregas: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir GestionarEntrega: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnEntregaActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro de que desea salir del sistema?",
+                "Confirmar salida",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments

@@ -361,6 +361,15 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
+        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu1MenuSelected(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Donador");
@@ -492,6 +501,18 @@ public class GestionarEntrega extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_BtnEliminarActionPerformed
+
+    private void jMenu1MenuSelected(javax.swing.event.MenuEvent evt) {
+        try {
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al regresar al menú: " + e.getMessage(),
+                                        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            java.util.logging.Logger.getLogger(GestionarEntrega.class.getName()).log(java.util.logging.Level.SEVERE, "Error al regresar al menú", e);
+        }
+    }
 
     /**
      * @param args the command line arguments

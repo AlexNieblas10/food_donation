@@ -130,6 +130,15 @@ public class RegistroAlimento extends javax.swing.JFrame {
 
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
+        jMenu1.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMenu1MenuSelected(evt);
+            }
+        });
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Donador");
@@ -264,6 +273,18 @@ public class RegistroAlimento extends javax.swing.JFrame {
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void jMenu1MenuSelected(javax.swing.event.MenuEvent evt) {
+        try {
+            Menu menu = new Menu();
+            menu.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al regresar al menú: " + e.getMessage(),
+                                        "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al regresar al menú: " + e.getMessage());
+        }
+    }
 
     /**
      * @param args the command line arguments

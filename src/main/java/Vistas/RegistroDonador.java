@@ -283,20 +283,28 @@ public class RegistroDonador extends javax.swing.JFrame {
 
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+
+        // Crear un MenuItem para el menú principal
+        javax.swing.JMenuItem menuItem = new javax.swing.JMenuItem("Ir al Menú Principal");
+        menuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu1ActionPerformed(evt);
             }
         });
+        jMenu1.add(menuItem);
         jMenuBar1.add(jMenu1);
 
         jMenuOrg.setText("Organizaciones");
         jMenuOrg.setActionCommand("BtnOrganizaciones");
-        jMenuOrg.addActionListener(new java.awt.event.ActionListener() {
+
+        // Crear un MenuItem para organizaciones
+        javax.swing.JMenuItem orgMenuItem = new javax.swing.JMenuItem("Ir a Organizaciones");
+        orgMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuOrgActionPerformed(evt);
             }
         });
+        jMenuOrg.add(orgMenuItem);
         jMenuBar1.add(jMenuOrg);
 
         jMenuAli.setText("Alimentos");
@@ -611,11 +619,27 @@ public class RegistroDonador extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            Vistas.Menu menu = new Vistas.Menu();
+            menu.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al regresar al menú: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al regresar al menú: " + e.getMessage());
+        }
     }//GEN-LAST:event_jMenu1ActionPerformed
 
     private void jMenuOrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOrgActionPerformed
-        // TODO add your handling code here:
+        try {
+            Vistas.RegistroOrganizacion registroOrganizacion = new Vistas.RegistroOrganizacion();
+            registroOrganizacion.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir registro de organizaciones: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir RegistroOrganizacion: " + e.getMessage());
+        }
     }//GEN-LAST:event_jMenuOrgActionPerformed
 
     private void jMenuEntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEntActionPerformed
