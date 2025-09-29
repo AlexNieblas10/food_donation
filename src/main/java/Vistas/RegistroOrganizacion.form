@@ -4,29 +4,41 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="jMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Menu"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnMenu"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuActionPerformed"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="jMenuDon">
           <Properties>
             <Property name="text" type="java.lang.String" value="Donadores"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnDonadores"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuDonActionPerformed"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
+        <Menu class="javax.swing.JMenu" name="jMenuAli">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Alimentos"/>
+            <Property name="text" type="java.lang.String" value="Alimento"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnAlimentos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuAliActionPerformed"/>
+          </Events>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
+        <Menu class="javax.swing.JMenu" name="jMenuEnt">
           <Properties>
             <Property name="text" type="java.lang.String" value="Entrega"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnEntrega"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuEntActionPerformed"/>
+          </Events>
         </Menu>
       </SubComponents>
     </Menu>

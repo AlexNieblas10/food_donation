@@ -15,10 +15,10 @@ import java.util.Properties;
  * @author Laptop
  */
 public class ConexionDB {
-    private static String url;
-    private static String user;
-    private static String password;
-    private static String driver;
+    private static final String url;
+    private static final String user;
+    private static final String password;
+    private static final String driver;
 
     static {
         try (InputStream input = ConexionDB.class.getClassLoader().getResourceAsStream("db.properties")) {

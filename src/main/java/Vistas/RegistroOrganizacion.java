@@ -223,10 +223,10 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenu();
+        jMenuDon = new javax.swing.JMenu();
+        jMenuAli = new javax.swing.JMenu();
+        jMenuEnt = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -325,21 +325,41 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("Menu");
-        jMenu1.setActionCommand("BtnMenu");
-        jMenuBar1.add(jMenu1);
+        jMenu.setText("Menu");
+        jMenu.setActionCommand("BtnMenu");
+        jMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu);
 
-        jMenu2.setText("Donadores");
-        jMenu2.setActionCommand("BtnDonadores");
-        jMenuBar1.add(jMenu2);
+        jMenuDon.setText("Donadores");
+        jMenuDon.setActionCommand("BtnDonadores");
+        jMenuDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDonActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuDon);
 
-        jMenu3.setText("Alimentos");
-        jMenu3.setActionCommand("BtnAlimentos");
-        jMenuBar1.add(jMenu3);
+        jMenuAli.setText("Alimento");
+        jMenuAli.setActionCommand("BtnAlimentos");
+        jMenuAli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAliActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuAli);
 
-        jMenu4.setText("Entrega");
-        jMenu4.setActionCommand("BtnEntrega");
-        jMenuBar1.add(jMenu4);
+        jMenuEnt.setText("Entrega");
+        jMenuEnt.setActionCommand("BtnEntrega");
+        jMenuEnt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuEntActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuEnt);
 
         setJMenuBar(jMenuBar1);
 
@@ -618,6 +638,58 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
 
+    private void jMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.Menu menu = new Vistas.Menu();
+    menu.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el menú principal: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.Menu: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuActionPerformed
+
+    private void jMenuDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.RegistroDonador registroDonador = new Vistas.RegistroDonador();
+    registroDonador.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el registro de donadores: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.RegistroDonador: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuDonActionPerformed
+
+    private void jMenuAliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAliActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.RegistroAlimento registroAlimento = new Vistas.RegistroAlimento(); 
+    registroAlimento.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el registro de alimentos: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.RegistroAlimento: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuAliActionPerformed
+
+    private void jMenuEntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEntActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.GestionarEntrega gestionarEntrega = new Vistas.GestionarEntrega();
+    gestionarEntrega.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir la gestión de entregas: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.GestionarEntrega: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuEntActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -658,11 +730,11 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenu jMenuAli;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuDon;
+    private javax.swing.JMenu jMenuEnt;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField3Correo;

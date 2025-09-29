@@ -173,7 +173,7 @@ public class RegistroDonador extends javax.swing.JFrame {
         jTableBuscar = new javax.swing.JTable();
         btnActualizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenu();
         jMenuOrg = new javax.swing.JMenu();
         jMenuAli = new javax.swing.JMenu();
         jMenuEnt = new javax.swing.JMenu();
@@ -328,14 +328,14 @@ public class RegistroDonador extends javax.swing.JFrame {
             }
         });
 
-        jMenu1.setText("Menu");
-        jMenu1.setActionCommand("BtnMenu");
-        jMenu1.addActionListener(new java.awt.event.ActionListener() {
+        jMenu.setText("Menu");
+        jMenu.setActionCommand("BtnMenu");
+        jMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenu1ActionPerformed(evt);
+                jMenuActionPerformed(evt);
             }
         });
-        jMenuBar1.add(jMenu1);
+        jMenuBar1.add(jMenu);
 
         jMenuOrg.setText("Organizaciones");
         jMenuOrg.setActionCommand("BtnOrganizaciones");
@@ -348,6 +348,11 @@ public class RegistroDonador extends javax.swing.JFrame {
 
         jMenuAli.setText("Alimentos");
         jMenuAli.setActionCommand("BtnAlimentos");
+        jMenuAli.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuAliActionPerformed(evt);
+            }
+        });
         jMenuBar1.add(jMenuAli);
 
         jMenuEnt.setText("Entrega");
@@ -663,7 +668,7 @@ public class RegistroDonador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
 
-    private void jMenu1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu1ActionPerformed
+    private void jMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuActionPerformed
         try {
             Vistas.Menu menu = new Vistas.Menu();
             menu.setVisible(true);
@@ -673,7 +678,7 @@ public class RegistroDonador extends javax.swing.JFrame {
                                         "Error", JOptionPane.ERROR_MESSAGE);
             logger.severe("Error al regresar al menú: " + e.getMessage());
         }
-    }//GEN-LAST:event_jMenu1ActionPerformed
+    }//GEN-LAST:event_jMenuActionPerformed
 
     private void jMenuOrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOrgActionPerformed
         try {
@@ -689,6 +694,15 @@ public class RegistroDonador extends javax.swing.JFrame {
 
     private void jMenuEntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEntActionPerformed
         // TODO add your handling code here:
+        try {
+    Vistas.GestionarEntrega gestionarEntrega = new Vistas.GestionarEntrega();
+    gestionarEntrega.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir la gestión de entregas: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.GestionarEntrega: " + e.getMessage());
+}
     }//GEN-LAST:event_jMenuEntActionPerformed
 
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
@@ -756,6 +770,19 @@ public class RegistroDonador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnActualizarActionPerformed
 
+    private void jMenuAliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuAliActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.RegistroAlimento registroAlimento = new Vistas.RegistroAlimento(); 
+    registroAlimento.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el registro de alimentos: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.RegistroAlimento: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuAliActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -801,7 +828,7 @@ public class RegistroDonador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu;
     private javax.swing.JMenu jMenuAli;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuEnt;

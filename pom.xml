@@ -9,7 +9,7 @@
         <dependency>
     <groupId>com.mysql</groupId>
     <artifactId>mysql-connector-j</artifactId>
-    <version>8.0.33</version> <!-- Replace with the latest stable version -->
+    <version>9.4.0</version> 
 </dependency>
         <dependency>
             <groupId>com.toedter</groupId>

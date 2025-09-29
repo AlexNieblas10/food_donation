@@ -184,11 +184,11 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
         jDateChooserCaducidad = new com.toedter.calendar.JDateChooser();
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         btnActualizar = new javax.swing.JButton();
-        jMenuBarEntrega = new javax.swing.JMenuBar();
-        jMenuMenu = new javax.swing.JMenu();
-        jMenuDonador = new javax.swing.JMenu();
-        jMenuOrganizador = new javax.swing.JMenu();
-        jMenu4 = new javax.swing.JMenu();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu = new javax.swing.JMenu();
+        jMenuDon = new javax.swing.JMenu();
+        jMenuOrg = new javax.swing.JMenu();
+        jMenuEnt = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(630, 420));
@@ -273,23 +273,43 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
             }
         });
 
-        jMenuMenu.setText("Menu");
-        jMenuMenu.setActionCommand("BtnMenu");
-        jMenuBarEntrega.add(jMenuMenu);
+        jMenu.setText("Menu");
+        jMenu.setActionCommand("BtnMenu");
+        jMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenu);
 
-        jMenuDonador.setText("Donador");
-        jMenuDonador.setActionCommand("BtnDonador");
-        jMenuBarEntrega.add(jMenuDonador);
+        jMenuDon.setText("Donador");
+        jMenuDon.setActionCommand("BtnDonador");
+        jMenuDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDonActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuDon);
 
-        jMenuOrganizador.setText("Organizacion");
-        jMenuOrganizador.setActionCommand("BtnOrganizacion");
-        jMenuBarEntrega.add(jMenuOrganizador);
+        jMenuOrg.setText("Organizacion");
+        jMenuOrg.setActionCommand("BtnOrganizacion");
+        jMenuOrg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuOrgActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuOrg);
 
-        jMenu4.setText("Entrega");
-        jMenu4.setActionCommand("BtnEntrega");
-        jMenuBarEntrega.add(jMenu4);
+        jMenuEnt.setText("Entrega");
+        jMenuEnt.setActionCommand("BtnEntrega");
+        jMenuEnt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuEntActionPerformed(evt);
+            }
+        });
+        jMenuBar1.add(jMenuEnt);
 
-        setJMenuBar(jMenuBarEntrega);
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -516,6 +536,58 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
      
     }//GEN-LAST:event_btnActualizarActionPerformed
 
+    private void jMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.Menu menu = new Vistas.Menu();
+    menu.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el menú principal: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.Menu: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuActionPerformed
+
+    private void jMenuDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDonActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.RegistroDonador registroDonador = new Vistas.RegistroDonador();
+    registroDonador.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir el registro de donadores: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.RegistroDonador: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuDonActionPerformed
+
+    private void jMenuEntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuEntActionPerformed
+        // TODO add your handling code here:
+        try {
+    Vistas.GestionarEntrega gestionarEntrega = new Vistas.GestionarEntrega();
+    gestionarEntrega.setVisible(true);
+    this.dispose();
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error al abrir la gestión de entregas: " + e.getMessage(),
+                                  "Error de Navegación", JOptionPane.ERROR_MESSAGE);
+    logger.severe("Error al abrir Vistas.GestionarEntrega: " + e.getMessage());
+}
+    }//GEN-LAST:event_jMenuEntActionPerformed
+
+    private void jMenuOrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuOrgActionPerformed
+        // TODO add your handling code here:
+          try {
+            RegistroOrganizacion registroOrganizacion = new RegistroOrganizacion();
+            registroOrganizacion.setVisible(true);
+            this.setVisible(false);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al abrir el registro de organizaciones: " + e.getMessage(),
+                                        "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al abrir RegistroOrganizacion: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jMenuOrgActionPerformed
+
     private void jMenu1MenuSelected(javax.swing.event.MenuEvent evt) {
         try {
             Menu menu = new Menu();
@@ -566,11 +638,11 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenuBar jMenuBarEntrega;
-    private javax.swing.JMenu jMenuDonador;
-    private javax.swing.JMenu jMenuMenu;
-    private javax.swing.JMenu jMenuOrganizador;
+    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenu jMenuDon;
+    private javax.swing.JMenu jMenuEnt;
+    private javax.swing.JMenu jMenuOrg;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableAlimentos;
     private javax.swing.JTextField jTextField4Cantidad;
