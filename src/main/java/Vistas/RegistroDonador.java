@@ -173,10 +173,10 @@ public class RegistroDonador extends javax.swing.JFrame {
         jTableBuscar = new javax.swing.JTable();
         btnActualizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
-        jMenuOrg = new javax.swing.JMenu();
-        jMenuAli = new javax.swing.JMenu();
-        jMenuEnt = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenuItem();
+        jMenuOrg = new javax.swing.JMenuItem();
+        jMenuAli = new javax.swing.JMenuItem();
+        jMenuEnt = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -828,11 +828,11 @@ public class RegistroDonador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu;
-    private javax.swing.JMenu jMenuAli;
+    private javax.swing.JMenuItem jMenu;
+    private javax.swing.JMenuItem jMenuAli;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuEnt;
-    private javax.swing.JMenu jMenuOrg;
+    private javax.swing.JMenuItem jMenuEnt;
+    private javax.swing.JMenuItem jMenuOrg;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableBuscar;
     private javax.swing.JTextField jTextFieldApMaterno;

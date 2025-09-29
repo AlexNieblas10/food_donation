@@ -149,10 +149,10 @@ public class GestionarEntrega extends javax.swing.JFrame {
         BtnActualizar = new javax.swing.JButton();
         BtnEliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
-        jMenuDon = new javax.swing.JMenu();
-        jMenuAli = new javax.swing.JMenu();
-        jMenuOrg = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenuItem();
+        jMenuDon = new javax.swing.JMenuItem();
+        jMenuAli = new javax.swing.JMenuItem();
+        jMenuOrg = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -557,7 +557,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
           try {
             RegistroOrganizacion registroOrganizacion = new RegistroOrganizacion();
             registroOrganizacion.setVisible(true);
-            this.setVisible(false);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al abrir el registro de organizaciones: " + e.getMessage(),
                                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -617,11 +617,11 @@ public class GestionarEntrega extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu;
-    private javax.swing.JMenu jMenuAli;
+    private javax.swing.JMenuItem jMenu;
+    private javax.swing.JMenuItem jMenuAli;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuDon;
-    private javax.swing.JMenu jMenuOrg;
+    private javax.swing.JMenuItem jMenuDon;
+    private javax.swing.JMenuItem jMenuOrg;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

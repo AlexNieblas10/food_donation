@@ -185,10 +185,10 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         btnActualizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
-        jMenuDon = new javax.swing.JMenu();
-        jMenuOrg = new javax.swing.JMenu();
-        jMenuEnt = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenuItem();
+        jMenuDon = new javax.swing.JMenuItem();
+        jMenuOrg = new javax.swing.JMenuItem();
+        jMenuEnt = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(630, 420));
@@ -580,7 +580,7 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
           try {
             RegistroOrganizacion registroOrganizacion = new RegistroOrganizacion();
             registroOrganizacion.setVisible(true);
-            this.setVisible(false);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al abrir el registro de organizaciones: " + e.getMessage(),
                                         "Error", JOptionPane.ERROR_MESSAGE);
@@ -638,11 +638,11 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu;
+    private javax.swing.JMenuItem jMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuDon;
-    private javax.swing.JMenu jMenuEnt;
-    private javax.swing.JMenu jMenuOrg;
+    private javax.swing.JMenuItem jMenuDon;
+    private javax.swing.JMenuItem jMenuEnt;
+    private javax.swing.JMenuItem jMenuOrg;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableAlimentos;
     private javax.swing.JTextField jTextField4Cantidad;

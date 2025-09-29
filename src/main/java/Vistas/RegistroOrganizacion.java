@@ -223,10 +223,10 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         btnEliminar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu = new javax.swing.JMenu();
-        jMenuDon = new javax.swing.JMenu();
-        jMenuAli = new javax.swing.JMenu();
-        jMenuEnt = new javax.swing.JMenu();
+        jMenu = new javax.swing.JMenuItem();
+        jMenuDon = new javax.swing.JMenuItem();
+        jMenuAli = new javax.swing.JMenuItem();
+        jMenuEnt = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -730,11 +730,11 @@ public class RegistroOrganizacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JMenu jMenu;
-    private javax.swing.JMenu jMenuAli;
+    private javax.swing.JMenuItem jMenu;
+    private javax.swing.JMenuItem jMenuAli;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu jMenuDon;
-    private javax.swing.JMenu jMenuEnt;
+    private javax.swing.JMenuItem jMenuDon;
+    private javax.swing.JMenuItem jMenuEnt;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField3Correo;
