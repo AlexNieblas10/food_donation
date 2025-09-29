@@ -177,7 +177,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void btnAlimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlimentoActionPerformed
         try {
-            RegistroAlimento registroAlimento = new RegistroAlimento(null);
+            RegistroAlimento registroAlimento = new RegistroAlimento();
             registroAlimento.setVisible(true);
             this.setVisible(false);
         } catch (Exception e) {

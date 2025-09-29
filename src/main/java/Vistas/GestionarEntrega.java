@@ -428,8 +428,14 @@ public class GestionarEntrega extends javax.swing.JFrame {
             double cantidad = Double.parseDouble(jTextFieldCantidad.getText().trim());
             Date fecha = jDateChooserFechaEntrega.getDate();
             String estado = jComboBoxEstado.getSelectedItem().toString();
-            
-            double cantidadDisponible = (double) jTableAlimentosDisponibles.getValueAt(jTableAlimentosDisponibles.getSelectedRow(), 3);
+
+            int filaSeleccionada = jTableAlimentosDisponibles.getSelectedRow();
+            if (filaSeleccionada == -1) {
+                JOptionPane.showMessageDialog(this, "Debe seleccionar un alimento de la tabla.", "Error", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            double cantidadDisponible = (double) jTableAlimentosDisponibles.getValueAt(filaSeleccionada, 3);
             if (cantidad <= 0 || cantidad > cantidadDisponible) {
                 JOptionPane.showMessageDialog(this, "La cantidad no es válida.", "Error", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -438,7 +444,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
             // 2. Crear objetos
             Entrega entrega = new Entrega();
             entrega.setIdOrganizacion(idOrg);
-            entrega.setFechaEntrega((java.sql.Date) fecha);
+            entrega.setFechaEntrega(new java.sql.Date(fecha.getTime()));
             entrega.setEstadoEntrega(estado.toLowerCase());
 
             DetalleEntrega detalle = new DetalleEntrega();

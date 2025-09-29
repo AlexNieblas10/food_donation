@@ -475,7 +475,7 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
         alimento.setNombreAlimento(jTextFieldAlimento.getText().trim());
         alimento.setCategoria(jComboBoxCategoria.getSelectedItem().toString());
         alimento.setCantidadDisponible(Double.parseDouble(jTextField4Cantidad.getText().trim()));
-        alimento.setFechaCaducidad((Date) jDateChooserCaducidad.getDate());
+        alimento.setFechaCaducidad(new java.sql.Date(jDateChooserCaducidad.getDate().getTime()));
         
         String idDonadorStr = jTextFieldIDDonador.getText().trim();
         if (!idDonadorStr.isEmpty()) {
@@ -513,7 +513,7 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
             alimento.setNombreAlimento(jTextFieldAlimento.getText().trim());
             alimento.setCategoria(jComboBoxCategoria.getSelectedItem().toString());
             alimento.setCantidadDisponible(Double.parseDouble(jTextField4Cantidad.getText().trim()));
-            alimento.setFechaCaducidad((Date) jDateChooserCaducidad.getDate());
+            alimento.setFechaCaducidad(new java.sql.Date(jDateChooserCaducidad.getDate().getTime()));
             
             String idDonadorStr = jTextFieldIDDonador.getText().trim();
             if (!idDonadorStr.isEmpty()) {
@@ -622,7 +622,7 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new RegistroAlimento(null).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new RegistroAlimento().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
