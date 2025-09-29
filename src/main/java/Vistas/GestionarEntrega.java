@@ -71,6 +71,15 @@ public class GestionarEntrega extends javax.swing.JFrame {
     private void cargarTablaAlimentosDisponibles() {
         modeloAlimentosDisponibles.setRowCount(0); // Limpiar tabla
         List<Alimento> alimentos = alimentoDAO.obtenerAlimentosDisponibles();
+
+        System.out.println("Número de alimentos disponibles encontrados: " + alimentos.size());
+
+        if (alimentos.isEmpty()) {
+            // Si no hay alimentos disponibles, intentar cargar todos los alimentos
+            alimentos = alimentoDAO.obtenerTodosLosAlimentos();
+            System.out.println("Número total de alimentos: " + alimentos.size());
+        }
+
         for (Alimento alim : alimentos) {
             modeloAlimentosDisponibles.addRow(new Object[]{
                 alim.getIdAlimento(),
