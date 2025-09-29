@@ -6,6 +6,7 @@ package DAO;
 
 import ConexionDB.ConexionDB;
 import Entidades.Direccion;
+import Excepciones.DonadorException;
 import InterfacesDAO.IDireccion;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -129,6 +130,35 @@ public class DireccionDAO implements IDireccion {
             System.err.println("Error al obtener direcciones: " + e.getMessage());
         }
         return lista;
+    }
+    
+    public Direccion obtenerDireccionPorId(int id) throws DonadorException {
+        // Asegúrate que los nombres de la tabla y las columnas coincidan con tu base de datos
+        String sql = "SELECT id_direccion, calle, numero, colonia, ciudad, estado, codigo_postal " +
+                     "FROM Direccion WHERE id_direccion = ?";
+        Direccion direccion = null;
+
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Si se encuentra un registro
+                    direccion = new Direccion();
+                    direccion.setIdDireccion(rs.getInt("id_direccion"));
+                    direccion.setCalle(rs.getString("calle"));
+                    direccion.setNumero(rs.getString("numero"));
+                    direccion.setColonia(rs.getString("colonia"));
+                    direccion.setCiudad(rs.getString("ciudad"));
+                    direccion.setEstado(rs.getString("estado"));
+                    direccion.setCodigoPostal(rs.getString("codigo_postal"));
+                }
+            }
+        } catch (SQLException e) {
+         
+            throw new DonadorException("Error al obtener dirección por ID: " + e.getMessage(), e);
+        }
+        return direccion;
     }
 
 }

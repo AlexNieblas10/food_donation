@@ -6,13 +6,16 @@ package DAO;
 
 import ConexionDB.ConexionDB;
 import Entidades.Donador;
+import Excepciones.DonadorException;
 import InterfacesDAO.IDonador;
+import static com.mysql.cj.conf.PropertyKey.logger;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 /**
  *
@@ -118,4 +121,69 @@ public class DonadorDAO implements IDonador {
         }
         return lista;
     }
+    
+    /**
+     * Actualiza los datos de un donador existente en la base de datos.
+     * @param donador El objeto Donador con los datos actualizados y el ID.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     * @throws DonadorException Si ocurre un error de SQL.
+     */
+    public boolean actualizarDonador(Donador donador) throws DonadorException {
+        // La consulta SQL para actualizar todos los campos del donador basado en su ID
+        String sql = "UPDATE Donador SET nombre = ?, apellido_paterno = ?, apellido_materno = ?, " +
+                     "tipo_donador = ?, correo_electronico = ?, telefono = ? WHERE id_donador = ?";
+        
+        try (Connection conn = ConexionDB.getConnection(); // Asegúrate de que tu clase de conexión se llame así
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // Asignar los valores del objeto donador a la consulta preparada
+            pstmt.setString(1, donador.getNombre());
+            pstmt.setString(2, donador.getApellidoPaterno());
+            pstmt.setString(3, donador.getApellidoMaterno());
+            pstmt.setString(4, donador.getTipoDonador());
+            pstmt.setString(5, donador.getCorreo()); // Asegúrate de que el getter se llame así
+            pstmt.setString(6, donador.getTelefono());
+            pstmt.setInt(7, donador.getIdDonador()); // ID para la cláusula WHERE
+
+            int filasAfectadas = pstmt.executeUpdate();
+            
+            // La actualización es exitosa si se modificó al menos una fila
+            return filasAfectadas > 0;
+
+        } catch (SQLException e) {
+            
+            throw new DonadorException("Error al actualizar donador: " + e.getMessage(), e);
+        }
+    }
+    
+     public Donador obtenerDonadorPorId(int id) throws DonadorException {
+        // Asegúrate que los nombres de las columnas y la tabla coincidan con tu base de datos
+        String sql = "SELECT id_donador, nombre, apellido_paterno, apellido_materno, tipo_donador, " +
+                     "correo, telefono, id_direccion FROM Donador WHERE id_donador = ?";
+        Donador donador = null;
+
+        try (Connection conn = ConexionDB.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) { // Si se encuentra un registro
+                    donador = new Donador();
+                    donador.setIdDonador(rs.getInt("id_donador"));
+                    donador.setNombre(rs.getString("nombre"));
+                    donador.setApellidoPaterno(rs.getString("apellido_paterno"));
+                    donador.setApellidoMaterno(rs.getString("apellido_materno"));
+                    donador.setTipoDonador(rs.getString("tipo_donador"));
+                    donador.setCorreo(rs.getString("correo"));
+                    donador.setTelefono(rs.getString("telefono"));
+                    donador.setIdDireccion(rs.getInt("id_direccion"));
+                }
+            }
+        } catch (SQLException e) {
+          
+            throw new DonadorException("Error al obtener donador por ID: " + e.getMessage(), e);
+        }
+        return donador;
+    }
+
 }

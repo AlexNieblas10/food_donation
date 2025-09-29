@@ -184,10 +184,10 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
         jDateChooserCaducidad = new com.toedter.calendar.JDateChooser();
         jComboBoxCategoria = new javax.swing.JComboBox<>();
         btnActualizar = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        jMenuBarEntrega = new javax.swing.JMenuBar();
+        jMenuMenu = new javax.swing.JMenu();
+        jMenuDonador = new javax.swing.JMenu();
+        jMenuOrganizador = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -273,23 +273,23 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
             }
         });
 
-        jMenu1.setText("Menu");
-        jMenu1.setActionCommand("BtnMenu");
-        jMenuBar1.add(jMenu1);
+        jMenuMenu.setText("Menu");
+        jMenuMenu.setActionCommand("BtnMenu");
+        jMenuBarEntrega.add(jMenuMenu);
 
-        jMenu2.setText("Donador");
-        jMenu2.setActionCommand("BtnDonador");
-        jMenuBar1.add(jMenu2);
+        jMenuDonador.setText("Donador");
+        jMenuDonador.setActionCommand("BtnDonador");
+        jMenuBarEntrega.add(jMenuDonador);
 
-        jMenu3.setText("Organizacion");
-        jMenu3.setActionCommand("BtnOrganizacion");
-        jMenuBar1.add(jMenu3);
+        jMenuOrganizador.setText("Organizacion");
+        jMenuOrganizador.setActionCommand("BtnOrganizacion");
+        jMenuBarEntrega.add(jMenuOrganizador);
 
         jMenu4.setText("Entrega");
         jMenu4.setActionCommand("BtnEntrega");
-        jMenuBar1.add(jMenu4);
+        jMenuBarEntrega.add(jMenu4);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(jMenuBarEntrega);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -487,7 +487,6 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
 
         try {
             Alimento alimento = new Alimento();
-            // El ID se obtiene de la tabla, ya que no tienes un campo jTextFieldIDAlimento
             int idAlimento = (int) modeloTablaAlimentos.getValueAt(filaSeleccionada, 0);
             alimento.setIdAlimento(idAlimento);
             
@@ -567,11 +566,11 @@ private final AlimentoDAO alimentoDAO; // Declarar aquí
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBarEntrega;
+    private javax.swing.JMenu jMenuDonador;
+    private javax.swing.JMenu jMenuMenu;
+    private javax.swing.JMenu jMenuOrganizador;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableAlimentos;
     private javax.swing.JTextField jTextField4Cantidad;

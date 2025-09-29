@@ -2,21 +2,21 @@
 
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <NonVisualComponents>
-    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+    <Menu class="javax.swing.JMenuBar" name="jMenuBarEntrega">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="jMenu1">
+        <Menu class="javax.swing.JMenu" name="jMenuMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Menu"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnMenu"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu2">
+        <Menu class="javax.swing.JMenu" name="jMenuDonador">
           <Properties>
             <Property name="text" type="java.lang.String" value="Donador"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnDonador"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
+        <Menu class="javax.swing.JMenu" name="jMenuOrganizador">
           <Properties>
             <Property name="text" type="java.lang.String" value="Organizacion"/>
             <Property name="actionCommand" type="java.lang.String" value="BtnOrganizacion"/>
@@ -38,7 +38,7 @@
     </Property>
   </Properties>
   <SyntheticProperties>
-    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBarEntrega"/>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>

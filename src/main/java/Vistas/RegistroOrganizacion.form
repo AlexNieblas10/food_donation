@@ -55,35 +55,34 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel3" linkSize="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel5" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel6" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel7" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel8" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel9" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel10" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel11" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jTextFieldOrganizacion" linkSize="1" alignment="0" pref="205" max="32767" attributes="0"/>
-                  <Component id="jTextFieldResponsable" linkSize="1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextField3Correo" linkSize="1" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
-                  <Component id="jTextField4Telefono" linkSize="1" alignment="0" min="-2" pref="203" max="-2" attributes="0"/>
-                  <Component id="jTextFieldCalle" linkSize="1" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
-                  <Component id="jTextFieldNumero" linkSize="1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextFieldColonia" linkSize="1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextFieldCiudad" linkSize="1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextFieldEstado" linkSize="1" alignment="0" max="32767" attributes="0"/>
-                  <Component id="jTextFieldCodigoPos" linkSize="1" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel3" linkSize="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel5" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel6" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel7" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel8" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel9" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel10" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabel11" linkSize="3" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jTextFieldOrganizacion" linkSize="1" alignment="0" pref="205" max="32767" attributes="0"/>
+                          <Component id="jTextFieldResponsable" linkSize="1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextField3Correo" linkSize="1" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="jTextField4Telefono" linkSize="1" alignment="0" min="-2" pref="203" max="-2" attributes="0"/>
+                          <Component id="jTextFieldCalle" linkSize="1" alignment="0" min="-2" pref="201" max="-2" attributes="0"/>
+                          <Component id="jTextFieldNumero" linkSize="1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextFieldColonia" linkSize="1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextFieldCiudad" linkSize="1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextFieldEstado" linkSize="1" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextFieldCodigoPos" linkSize="1" alignment="0" min="-2" pref="205" max="-2" attributes="0"/>
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <Component id="btnBuscar" min="-2" max="-2" attributes="0"/>
@@ -92,19 +91,6 @@
                           </Group>
                           <Component id="jScrollPane1" min="-2" pref="293" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="24" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="131" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-          </Group>
-          <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="128" pref="128" max="-2" attributes="0"/>
-                      <Component id="btnGuardar" min="-2" pref="86" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
@@ -115,7 +101,14 @@
                       <Component id="jLabel2" linkSize="3" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
+              <EmptySpace pref="24" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="128" pref="128" max="-2" attributes="0"/>
+              <Component id="btnGuardar" min="-2" pref="86" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
+              <Component id="btnEliminar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="118" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>

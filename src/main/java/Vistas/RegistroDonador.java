@@ -25,6 +25,7 @@ public class RegistroDonador extends javax.swing.JFrame {
     private DonadorController donadorController;
     private DireccionController direccionController;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroDonador.class.getName());
+    private int idDireccionSeleccionada = -1;
 
     /**
      * Creates new form RegistroDonador
@@ -46,7 +47,7 @@ public class RegistroDonador extends javax.swing.JFrame {
         jTableBuscar.setRowSorter(sorter);
         
     }
-
+    
     /**
      * Metodo para poblar la tabla con los donadores de la base de datos.
      */
@@ -91,6 +92,44 @@ public class RegistroDonador extends javax.swing.JFrame {
         jTextFieldEstado.setText("");
         JTextFieldCodigoPos.setText("");
     }
+    
+    private boolean validarCampos() {
+        if (jTextFieldNombre.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre del donador es obligatorio.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (jTextFieldAppaterno.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El apellido paterno del donador es obligatorio.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        // Puedes añadir más validaciones para el donador (ej. correo, teléfono)
+        // if (jTextFieldCorreo.getText().trim().isEmpty() || !jTextFieldCorreo.getText().contains("@")) { ... }
+
+        if (jTextFieldCalle.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La calle de la dirección es obligatoria.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (jTextFieldCiudad.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "La ciudad de la dirección es obligatoria.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (jTextFieldEstado.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El estado de la dirección es obligatorio.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        // Puedes añadir validación de formato para código postal, número (si es numérico), etc.
+        try {
+            if (!jTextFieldNumero.getText().trim().isEmpty()) {
+                Integer.parseInt(jTextFieldNumero.getText().trim());
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "El número de la dirección debe ser numérico si se especifica.", "Error de Validación", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        // ... (añade todas las validaciones que necesites) ...
+
+        return true; // Todos los campos son válidos
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -132,6 +171,7 @@ public class RegistroDonador extends javax.swing.JFrame {
         btnBuscar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableBuscar = new javax.swing.JTable();
+        btnActualizar = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuOrg = new javax.swing.JMenu();
@@ -281,30 +321,29 @@ public class RegistroDonador extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTableBuscar);
 
+        btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Menu");
         jMenu1.setActionCommand("BtnMenu");
-
-        // Crear un MenuItem para el menú principal
-        javax.swing.JMenuItem menuItem = new javax.swing.JMenuItem("Ir al Menú Principal");
-        menuItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenu1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenu1ActionPerformed(evt);
             }
         });
-        jMenu1.add(menuItem);
         jMenuBar1.add(jMenu1);
 
         jMenuOrg.setText("Organizaciones");
         jMenuOrg.setActionCommand("BtnOrganizaciones");
-
-        // Crear un MenuItem para organizaciones
-        javax.swing.JMenuItem orgMenuItem = new javax.swing.JMenuItem("Ir a Organizaciones");
-        orgMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        jMenuOrg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuOrgActionPerformed(evt);
             }
         });
-        jMenuOrg.add(orgMenuItem);
         jMenuBar1.add(jMenuOrg);
 
         jMenuAli.setText("Alimentos");
@@ -368,11 +407,14 @@ public class RegistroDonador extends javax.swing.JFrame {
                                 .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(145, 145, 145)
-                                .addComponent(btnEliminar))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(40, 40, 40)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnActualizar)
+                                .addGap(80, 80, 80)
+                                .addComponent(btnEliminar)
+                                .addGap(23, 23, 23)))))
                 .addContainerGap(7, Short.MAX_VALUE))
         );
 
@@ -437,12 +479,15 @@ public class RegistroDonador extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel13)
-                            .addComponent(JTextFieldCodigoPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnEliminar))
+                            .addComponent(JTextFieldCodigoPos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnGuardar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnEliminar)
+                            .addComponent(btnActualizar))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -646,6 +691,71 @@ public class RegistroDonador extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuEntActionPerformed
 
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        // TODO add your handling code here:
+        if (!validarCampos()) {
+            return;
+        }
+        
+        int filaSeleccionada = jTableBuscar.getSelectedRow();
+        if (filaSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione un donador de la tabla para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (this.idDireccionSeleccionada == -1) {
+            JOptionPane.showMessageDialog(this, "No se pudo obtener la ID de la dirección del donador seleccionado. Vuelva a seleccionar el donador.", "Error Interno", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTableBuscar.getModel();
+            int filaModelo = jTableBuscar.convertRowIndexToModel(filaSeleccionada);
+            int idDonador = (int) model.getValueAt(filaModelo, 0); 
+            
+            // Crear el objeto Direccion
+            Direccion direccionActualizada = new Direccion();
+            direccionActualizada.setIdDireccion(this.idDireccionSeleccionada);
+            direccionActualizada.setCalle(jTextFieldCalle.getText().trim());
+            direccionActualizada.setNumero(jTextFieldNumero.getText().trim());
+            direccionActualizada.setColonia(jTextFieldColonia.getText().trim());
+            direccionActualizada.setCiudad(jTextFieldCiudad.getText().trim());
+            direccionActualizada.setEstado(jTextFieldEstado.getText().trim());
+            direccionActualizada.setCodigoPostal(JTextFieldCodigoPos.getText().trim());
+            
+            // Crear el objeto Donador
+            Donador donadorActualizado = new Donador();
+            donadorActualizado.setIdDonador(idDonador);
+            donadorActualizado.setNombre(jTextFieldNombre.getText().trim());
+            donadorActualizado.setApellidoPaterno(jTextFieldAppaterno.getText().trim());
+            donadorActualizado.setApellidoMaterno(jTextFieldApMaterno.getText().trim());
+            donadorActualizado.setTipoDonador((String) jComboBoxTipoDonador.getSelectedItem());
+            donadorActualizado.setCorreo(jTextFieldCorreo.getText().trim());
+            donadorActualizado.setTelefono(jTextFieldTelefono.getText().trim());
+            donadorActualizado.setIdDireccion(this.idDireccionSeleccionada);
+
+           
+            direccionController.actualizarDireccion(direccionActualizada);
+            donadorController.actualizarDonador(donadorActualizado);
+
+          
+            JOptionPane.showMessageDialog(this, "Donador y dirección actualizados exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            limpiarFormulario(); // Limpia los campos y resetea idDireccionSeleccionada
+            cargarDonadores(); // Recarga la tabla para mostrar los cambios
+            
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Error de formato en números (ej. número de dirección, código postal). Asegúrese de que los campos numéricos sean válidos.", "Error de Formato", JOptionPane.ERROR_MESSAGE);
+           
+        } catch (DonadorException e) { // Captura excepciones específicas del DAO/Controller
+  
+            JOptionPane.showMessageDialog(this, "Error de base de datos al actualizar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+           
+        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado al actualizar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+           
+        }
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -673,6 +783,7 @@ public class RegistroDonador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField JTextFieldCodigoPos;
+    private javax.swing.JButton btnActualizar;
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnGuardar;
