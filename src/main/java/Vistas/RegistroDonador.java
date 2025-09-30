@@ -8,6 +8,7 @@ import Control.DireccionController;
 import Control.DonadorController;
 import Entidades.Direccion;
 import Entidades.Donador;
+import Excepciones.DireccionException;
 import Excepciones.DonadorException;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -26,6 +27,7 @@ public class RegistroDonador extends javax.swing.JFrame {
     private DireccionController direccionController;
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(RegistroDonador.class.getName());
     private int idDireccionSeleccionada = -1;
+    private int donadorSeleccionadoId = -1;
 
     /**
      * Creates new form RegistroDonador
@@ -69,6 +71,14 @@ public class RegistroDonador extends javax.swing.JFrame {
                     donador.getTelefono()
                 });
             }
+            jTableBuscar.getSelectionModel().addListSelectionListener(e -> {
+                if (!e.getValueIsAdjusting()) {
+                    int filaSeleccionada = jTableBuscar.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        cargarDatosDonadores(filaSeleccionada);
+                    }
+                }
+            });
         } catch (DonadorException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar los donadores: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             logger.severe("Error en cargarDonadores: " + e.getMessage());
@@ -129,6 +139,44 @@ public class RegistroDonador extends javax.swing.JFrame {
         // ... (añade todas las validaciones que necesites) ...
 
         return true; // Todos los campos son válidos
+    }
+
+
+    private void cargarDatosDonadores(int fila) {
+        try {
+            DefaultTableModel modelo = (DefaultTableModel) jTableBuscar.getModel();
+            donadorSeleccionadoId = (Integer) modelo.getValueAt(fila, 0);
+            System.out.println(donadorSeleccionadoId);
+            Donador donador = donadorController.obtenerDonador(donadorSeleccionadoId);
+            idDireccionSeleccionada = donador.getIdDireccion();
+
+            if (donador != null) {
+                System.out.println(donador.getApellidoPaterno());
+                jTextFieldNombre.setText(donador.getNombre());
+                jTextFieldAppaterno.setText(donador.getApellidoPaterno());
+                jTextFieldApMaterno.setText(donador.getApellidoMaterno());
+                jTextFieldTelefono.setText(donador.getTelefono());
+                jTextFieldCorreo.setText(donador.getCorreo());
+                jComboBoxTipoDonador.setToolTipText(donador.getTipoDonador());
+
+
+                if (donador.getIdDireccion() > 0) {
+                    Direccion direccion = direccionController.obtenerDireccion(donador.getIdDireccion());
+                    if (direccion != null) {
+                        jTextFieldCalle.setText(direccion.getCalle());
+                        jTextFieldNumero.setText(direccion.getNumero());
+                        jTextFieldColonia.setText(direccion.getColonia());
+                        jTextFieldCiudad.setText(direccion.getCiudad());
+                        jTextFieldEstado.setText(direccion.getEstado());
+                        JTextFieldCodigoPos.setText(direccion.getCodigoPostal());
+                    }
+                }
+            }
+        } catch (DonadorException | DireccionException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            logger.severe("Error al cargar datos de donador: " + e.getMessage());
+        }
     }
 
     /**
@@ -710,22 +758,19 @@ public class RegistroDonador extends javax.swing.JFrame {
         if (!validarCampos()) {
             return;
         }
-        
-        int filaSeleccionada = jTableBuscar.getSelectedRow();
-        if (filaSeleccionada == -1) {
+
+        if (donadorSeleccionadoId == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione un donador de la tabla para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        System.out.println(idDireccionSeleccionada);
         if (this.idDireccionSeleccionada == -1) {
             JOptionPane.showMessageDialog(this, "No se pudo obtener la ID de la dirección del donador seleccionado. Vuelva a seleccionar el donador.", "Error Interno", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         try {
-            DefaultTableModel model = (DefaultTableModel) jTableBuscar.getModel();
-            int filaModelo = jTableBuscar.convertRowIndexToModel(filaSeleccionada);
-            int idDonador = (int) model.getValueAt(filaModelo, 0); 
             
             // Crear el objeto Direccion
             Direccion direccionActualizada = new Direccion();
@@ -739,7 +784,7 @@ public class RegistroDonador extends javax.swing.JFrame {
             
             // Crear el objeto Donador
             Donador donadorActualizado = new Donador();
-            donadorActualizado.setIdDonador(idDonador);
+            donadorActualizado.setIdDonador(donadorSeleccionadoId);
             donadorActualizado.setNombre(jTextFieldNombre.getText().trim());
             donadorActualizado.setApellidoPaterno(jTextFieldAppaterno.getText().trim());
             donadorActualizado.setApellidoMaterno(jTextFieldApMaterno.getText().trim());
@@ -748,7 +793,7 @@ public class RegistroDonador extends javax.swing.JFrame {
             donadorActualizado.setTelefono(jTextFieldTelefono.getText().trim());
             donadorActualizado.setIdDireccion(this.idDireccionSeleccionada);
 
-           
+
             direccionController.actualizarDireccion(direccionActualizada);
             donadorController.actualizarDonador(donadorActualizado);
 
