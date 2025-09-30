@@ -308,7 +308,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
 
         jLabel8.setText("Estado");
 
-        jComboBoxEstadoEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En Transito", "Completado", "Cancelado" }));
+        jComboBoxEstadoEntrega.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pendiente", "En Transito", "Completada", "Cancelada" }));
 
         BtnActualizar.setText("Actualizar");
         BtnActualizar.setActionCommand("BtnActualizar");
@@ -481,7 +481,7 @@ public class GestionarEntrega extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Seleccione una entrega de la tabla para actualizar.", "Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         int idEntrega = Integer.parseInt(jTextFieldIDEntrega.getText());
         String nuevoEstado = jComboBoxEstadoEntrega.getSelectedItem().toString().toLowerCase();
 
